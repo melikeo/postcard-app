@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import LandingPage from "./pages/LandingPage";
 import ImageUploadPage from "./pages/ImageUploadPage";
 import WriteMessagePage from "./pages/WriteMessagePage";
 import AboutYouPage from "./pages/SenderPage";
 import RecipientPage from "./pages/RecipientPage";
 import PreviewPage from "./pages/PreviewPage";
-// importiere weitere Seiten wie ImageUploadPage, wenn du sie hast
 
 export default function App() {
   const [step, setStep] = useState(0);
@@ -17,7 +16,6 @@ export default function App() {
         onNext={() => setStep(2)}
         onBack={() => setStep(0)} // back to home
       />}
-      {/* Weitere Steps ... */}
       {step === 2 && <WriteMessagePage
         onNext={() => setStep(3)}
         onBack={() => setStep(0)} // back to home
@@ -31,7 +29,6 @@ export default function App() {
         onBack={() => setStep(0)} // back to home
       />}
       {step === 5 && <PreviewPage
-        onNext={() => setStep(6)}
         onBack={() => setStep(0)} // back to home
       />}
     </>
