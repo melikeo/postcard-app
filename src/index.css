@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Gravitas+One&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Square+Peg&display=swap');
+
+@import "tailwindcss";
+
+@theme {    
+  --color-primary: #EA1818;
+  --color-background: #F8F8F8;
+  
+  --font-gravitas-one: "Gravitas One", sans-serif; /* main heading font */
+  --font-playfair-display: "Playfair Display", serif; /* subheadings and texts */
+  --font-square-peg: "Square Peg", cursive; /* handwritten font */
+
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-style-preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+.transition-transform {
+  transition: transform 0.6s;
+}
