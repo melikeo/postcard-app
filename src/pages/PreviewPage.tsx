@@ -4,7 +4,11 @@ import { pdf } from "@react-pdf/renderer";
 import PostcardPDF from "../components/PostcardPDF";
 import { usePostcardStore } from "../stores/postcardStore";
 
-export default function PreviewPage() {
+type PreviewPageProps = {
+  onBack: () => void;
+};
+
+export default function PreviewPage({ onBack }: PreviewPageProps) {
   const {
     uploadedImage,
     message,
@@ -31,7 +35,7 @@ export default function PreviewPage() {
 
   return (
     <section className="min-h-screen flex flex-col justify-center items-center bg-background px-6 sm:px-8">
-      <BackHome onClick={handleDownload} />
+      <BackHome onClick={onBack} />
 
       <h1 className="font-gravitas-one text-primary text-4xl md:text-5xl font-bold text-center mb-2 mt-15 leading-tight">
         N°5
