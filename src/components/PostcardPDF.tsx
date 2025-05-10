@@ -90,20 +90,20 @@ export default function PostcardPDF({
 }: PostcardPDFProps) {
   return (
     <Document>
-      {/* Vorderseite: Nur Bild */}
+      {/* front */}
       <Page size={{ width: 600, height: 400 }} style={styles.page}>
         <Image src={image} style={styles.image} />
       </Page>
-      {/* Rückseite: Text, Empfänger, Briefmarke, Linie */}
+      {/* back */}
       <Page size={{ width: 600, height: 400 }} style={styles.page}>
         <View style={styles.backContainer}>
-          {/* Linke Seite: Nachricht */}
+          {/* left side: message */}
           <View style={styles.left}>
             <Text style={styles.message}>{message}</Text>
           </View>
-          {/* Vertikale Linie */}
+          {/* line */}
           <View style={styles.divider} />
-          {/* Rechte Seite: Empfängerinfos */}
+          {/* right side */}
           <View style={styles.right}>
             <View style={styles.stamp} />
             <View style={{ marginTop: 100, width: '100%' }}>
