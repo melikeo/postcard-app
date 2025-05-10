@@ -12,7 +12,8 @@ export default function PostcardPreview() {
     message,
     recipientName,
     recipientCountry,
-    isGrayscale
+    isGrayscale,
+    setPdfUrl: setGlobalPdfUrl,
   } = usePostcardStore();
 
   const [processedImage, setProcessedImage] = useState<string | null>(null);
@@ -26,7 +27,7 @@ export default function PostcardPreview() {
 
   useEffect(() => {
     if (!processedImage) return;
-    
+
     // create PDF as Blob for URL
     async function generatePdf() {
       const blob = await pdf(
@@ -39,12 +40,18 @@ export default function PostcardPreview() {
       ).toBlob();
 
       setPdfUrl(URL.createObjectURL(blob));
+      const url = URL.createObjectURL(blob);
+      setPdfUrl(url);         // local state
+      setGlobalPdfUrl(url);   // global Zustand
     }
 
     generatePdf();
     // Clean up URL on unmount
     return () => {
-      if (pdfUrl) URL.revokeObjectURL(pdfUrl);
+      if (pdfUrl) {
+        URL.revokeObjectURL(pdfUrl);
+        setGlobalPdfUrl(null);
+      }
     };
     // eslint-disable-next-line
   }, [processedImage, message, recipientName, recipientCountry]);

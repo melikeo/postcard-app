@@ -20,6 +20,9 @@ type PostcardState = {
   setRecipientEmail: (email: string) => void
   recipientCountry: CountryOption | null;
   setRecipientCountry: (country: CountryOption | null) => void;
+  pdfUrl: string | null;
+  setPdfUrl: (url: string | null) => void;
+
   reset: () => void
 }
 
@@ -33,15 +36,17 @@ export const usePostcardStore = create<PostcardState>((set) => ({
   recipientName: '',
   recipientEmail: '',
   recipientCountry: null,
+  pdfUrl: '',
   setImage: (img) => set({ uploadedImage: img }),
   toggleGrayscale: () => set(state => ({ isGrayscale: !state.isGrayscale })),
-  setMessage: (msg) => set({ message: msg }),  
+  setMessage: (msg) => set({ message: msg }),
   setTextCount: (count) => set({ textCount: count }),
   setSenderName: (name) => set({ senderName: name }),
   setSenderCountry: (country) => set({ senderCountry: country }),
   setRecipientName: (name) => set({ recipientName: name }),
-  setRecipientEmail: (email) => set({recipientEmail: email}),
+  setRecipientEmail: (email) => set({ recipientEmail: email }),
   setRecipientCountry: (country) => set({ recipientCountry: country }),
+  setPdfUrl: (url) => set({ pdfUrl: url }),
   reset: () => set({
     uploadedImage: null,
     isGrayscale: false,

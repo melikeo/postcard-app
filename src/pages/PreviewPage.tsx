@@ -13,24 +13,17 @@ export default function PreviewPage({ onBack }: PreviewPageProps) {
     uploadedImage,
     message,
     recipientName,
-    recipientCountry
+    recipientCountry,
+    pdfUrl
   } = usePostcardStore();
 
-  const handleDownload = async () => {
-    const blob = await pdf(
-      <PostcardPDF
-        image={uploadedImage || ''}
-        message={message}
-        recipientName={recipientName}
-        recipientCountry={recipientCountry?.label || ''}
-      />
-    ).toBlob();
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'postcard.pdf';
-    a.click();
-    URL.revokeObjectURL(url);
+  const handleDownload = () => {
+    if (!pdfUrl) return;
+
+    const link = document.createElement('a');
+    link.href = pdfUrl;
+    link.download = 'postcard.pdf';
+    link.click();
   };
 
   return (
@@ -46,7 +39,7 @@ export default function PreviewPage({ onBack }: PreviewPageProps) {
 
       <button
         className="font-square-peg text-5xl mt-4 focus:outline-none cursor-pointer"
-        onClick={handleDownload}>Send {' >'}</button>
+        onClick={handleDownload} disabled={!pdfUrl}>Send {' >'}</button>
     </section>
   );
 }
