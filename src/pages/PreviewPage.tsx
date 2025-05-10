@@ -10,10 +10,6 @@ type PreviewPageProps = {
 
 export default function PreviewPage({ onBack }: PreviewPageProps) {
   const {
-    uploadedImage,
-    message,
-    recipientName,
-    recipientCountry,
     pdfUrl
   } = usePostcardStore();
 
