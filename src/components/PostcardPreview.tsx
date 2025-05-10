@@ -40,7 +40,7 @@ export default function PostcardPreview() {
     <div>
       {pdfUrl && (
         <div style={{ height: 400, width: 600 }}>
-          <Worker workerUrl={`https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js`}>
+          <Worker workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}>
             <Viewer fileUrl={pdfUrl} />
           </Worker>
         </div>
