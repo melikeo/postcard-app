@@ -4,37 +4,50 @@ import { Worker, Viewer } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import PostcardPDF from './PostcardPDF';
 import { usePostcardStore } from '../stores/postcardStore';
+import { processImage } from '../utils/imageEdit';
 
 export default function PostcardPreview() {
   const {
     uploadedImage,
     message,
     recipientName,
-    recipientCountry
+    recipientCountry,
+    isGrayscale
   } = usePostcardStore();
 
+  const [processedImage, setProcessedImage] = useState<string | null>(null);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!uploadedImage) return;
+
+    processImage(uploadedImage, isGrayscale).then(setProcessedImage);
+  }, [uploadedImage, isGrayscale]);
+
+  useEffect(() => {
+    if (!processedImage) return;
+    
     // create PDF as Blob for URL
     async function generatePdf() {
       const blob = await pdf(
         <PostcardPDF
-          image={uploadedImage || ''}
+          image={processedImage || ''}
           message={message}
           recipientName={recipientName}
           recipientCountry={recipientCountry?.label || ''}
         />
       ).toBlob();
+
       setPdfUrl(URL.createObjectURL(blob));
     }
+
     generatePdf();
     // Clean up URL on unmount
     return () => {
       if (pdfUrl) URL.revokeObjectURL(pdfUrl);
     };
     // eslint-disable-next-line
-  }, [uploadedImage, message, recipientName, recipientCountry]);
+  }, [processedImage, message, recipientName, recipientCountry]);
 
   return (
     <div>
