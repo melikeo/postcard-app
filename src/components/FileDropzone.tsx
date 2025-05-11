@@ -16,9 +16,9 @@ export default function MyDropzone({ onFilesDrop }: MyDropzoneProps) {
   const [processedImage, setProcessedImage] = useState<string | null>(null);
 
   useEffect(() => {
-  if (!uploadedImage) return;
-  processImage(uploadedImage, isGrayscale).then(setProcessedImage);
-}, [uploadedImage, isGrayscale]);
+    if (!uploadedImage) return;
+    processImage(uploadedImage, isGrayscale).then(setProcessedImage);
+  }, [uploadedImage, isGrayscale]);
 
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -39,16 +39,18 @@ export default function MyDropzone({ onFilesDrop }: MyDropzoneProps) {
     }
   }, [onFilesDrop, isGrayscale]);
 
-  const { getRootProps, getInputProps, isDragActive, fileRejections } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive, fileRejections, open } = useDropzone({
     onDrop,
     accept: { "image/*": [".jpeg", ".png", ".jpg"] },
     multiple: false,
     //maxSize
+    noClick: true
   });
 
   return (
     <div
       {...getRootProps()}
+      onClick={open}
       className={`  w-11/12 max-w-md p-10 mx-auto
         border-2 border-dashed rounded-lg text-center cursor-pointer 
         transition-colors
@@ -93,7 +95,7 @@ export default function MyDropzone({ onFilesDrop }: MyDropzoneProps) {
           <img
             src={processedImage}
             alt="Preview"
-           
+
             className="max-w-full h-auto mx-auto" />
         </div>
       )}
