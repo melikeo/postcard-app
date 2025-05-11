@@ -1,7 +1,5 @@
 import BackHome from "../components/BackHome";
 import PostcardPreview from "../components/PostcardPreview";
-import { pdf } from "@react-pdf/renderer";
-import PostcardPDF from "../components/PostcardPDF";
 import { usePostcardStore } from "../stores/postcardStore";
 
 type PreviewPageProps = {

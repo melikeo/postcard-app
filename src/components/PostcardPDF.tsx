@@ -1,4 +1,5 @@
 import { Document, Page, View, Text, Image, StyleSheet, Font } from '@react-pdf/renderer';
+import stampImage from '../assets/stamp.png';
 
 Font.register({
   family: 'Square Peg',
@@ -56,16 +57,16 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     position: 'relative',
   },
-  stamp: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    width: 64,
-    height: 64,
-    backgroundColor: '#e11d48',
-    borderRadius: 8,
-    transform: 'rotate(12deg)',
-  },
+ stamp: {
+  position: 'absolute',
+  top: 0,
+  right: 0,
+  width: 280,
+  height: 230,
+  borderRadius: 1,  
+  objectFit: 'contain',
+}
+,
   recipient: {
     fontSize: 38,
     borderBottom: '2px solid #888',
@@ -105,7 +106,7 @@ export default function PostcardPDF({
           <View style={styles.divider} />
           {/* right side */}
           <View style={styles.right}>
-            <View style={styles.stamp} />
+            <Image src={stampImage} style={styles.stamp} />
             <View style={{ marginTop: 100, width: '100%' }}>
               <Text style={styles.recipient}>{recipientName}</Text>
               <Text style={styles.recipient}>{recipientCountry}</Text>
