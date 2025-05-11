@@ -44,10 +44,10 @@ export default function MyDropzone({ onFilesDrop }: MyDropzoneProps) {
     accept: {
       'image/jpeg': [ '.jpeg' ],      
       'image/jpg': [ '.jpg' ],
-      'image/png': []
+      'image/png': [ '.png' ],
     },
     multiple: false,
-    //maxSize
+    maxSize: 10 * 1024 * 1024,
     noClick: true
   });
 
@@ -89,9 +89,12 @@ export default function MyDropzone({ onFilesDrop }: MyDropzoneProps) {
 
       {fileRejections.length > 0 && (
         <p className="font-playfair-display text-red-500 mt-2">
-          Wrong file type! - only images accepted
+          {fileRejections.some(rej => rej.errors.some(e => e.code === "file-too-large"))
+          ? "File is too large (max. 10MB)."
+          : "Wrong file type! - only images accepted"}
         </p>
       )}
+
 
       {processedImage && (
         <div className="mt-4">
