@@ -41,7 +41,11 @@ export default function MyDropzone({ onFilesDrop }: MyDropzoneProps) {
 
   const { getRootProps, getInputProps, isDragActive, fileRejections, open } = useDropzone({
     onDrop,
-    accept: { "image/*": [".jpeg", ".png", ".jpg"] },
+    accept: {
+      'image/jpeg': [ '.jpeg' ],      
+      'image/jpg': [ '.jpg' ],
+      'image/png': []
+    },
     multiple: false,
     //maxSize
     noClick: true
