@@ -96,7 +96,7 @@ export default function MyDropzone({ onFilesDrop }: MyDropzoneProps) {
       )}
 
       {isDragActive ? (
-        <p>Drop here ...</p>
+        <p className="font-playfair-display">Drop here ...</p>
       ) : uploadedImage ? (
         <p>
           <span className="font-playfair-display text-lg font-semibold">Upload success! <br /> </span>

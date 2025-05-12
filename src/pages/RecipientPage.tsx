@@ -31,7 +31,7 @@ export default function RecipientPage({ onNext, onBack }: RecipientPageProps) {
 
       <div className="w-full max-w-sm space-y-4">
         <div>
-          <label htmlFor="name" className="font-playfair-display block text-lg font-medium text-primary mb-1">Name</label>
+          <label htmlFor="name" className="font-playfair-display block text-lg font-medium text-primary mb-1">Name*</label>
           <input
             id="name"
             type="text"
@@ -55,7 +55,7 @@ export default function RecipientPage({ onNext, onBack }: RecipientPageProps) {
         </div>
 
         <div>
-          <label className="font-playfair-display block text-lg font-medium text-primary mb-1">Where is the card heading?</label>
+          <label className="font-playfair-display block text-lg font-medium text-primary mb-1">Where is the card heading?*</label>
           <Select<CountryOption>
             options={countryOptions}
             value={recipientCountry}
