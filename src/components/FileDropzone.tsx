@@ -23,12 +23,11 @@ export default function MyDropzone({ onFilesDrop }: MyDropzoneProps) {
 
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
-    const originalFile = acceptedFiles[0];
-    if (!originalFile) return;
+    let file = acceptedFiles[0];
+    if (!file) return;
 
     try {
-      let file = originalFile;
-      if (originalFile.type === "image/heic" || originalFile.type === "image.heif") {
+      if (file.type === "image/heic" || file.type === "image.heif") {
         const convertedBlob = await heic2any({
           blob: file,
           toType: "image/jpeg",
@@ -46,16 +45,20 @@ export default function MyDropzone({ onFilesDrop }: MyDropzoneProps) {
       setProcessedImage(blobUrl);
 
       const reader = new FileReader();
-      reader.onload = () => {
-        setImage(reader.result as string); // save image (as Base64)
-      }
+      reader.onload = async () => {
+        const dataUrl = reader.result as string;
+        const processed = await processImage(dataUrl, isGrayscale);
+        setImage(dataUrl); // save image (as Base64)
+        setProcessedImage(processed);
+      };
+      reader.readAsDataURL(file);
 
       if (onFilesDrop) onFilesDrop([file]);
     } catch (error) {
       console.error("Converting failed: ", error);
       alert("This image format cannot be processed.");
     }
-  }, [onFilesDrop, isGrayscale]);
+  }, [onFilesDrop, isGrayscale, setImage]);
 
   const { getRootProps, getInputProps, isDragActive, fileRejections, open } = useDropzone({
     onDrop,
