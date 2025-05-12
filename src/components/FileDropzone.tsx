@@ -27,7 +27,7 @@ export default function MyDropzone({ onFilesDrop }: MyDropzoneProps) {
     if (!file) return;
 
     try {
-      if (file.type === "image/heic" || file.type === "image.heif") {
+      if (file.type === "image/heic" || file.type === "image/heif" || file.name.toLowerCase().endsWith(".heic")) {
         const convertedBlob = await heic2any({
           blob: file,
           toType: "image/jpeg",
@@ -41,8 +41,8 @@ export default function MyDropzone({ onFilesDrop }: MyDropzoneProps) {
         );
       }
 
-      const blobUrl = URL.createObjectURL(file);
-      setProcessedImage(blobUrl);
+      //const blobUrl = URL.createObjectURL(file);
+      //setProcessedImage(blobUrl);
 
       const reader = new FileReader();
       reader.onload = async () => {
@@ -66,6 +66,7 @@ export default function MyDropzone({ onFilesDrop }: MyDropzoneProps) {
       'image/jpeg': ['.jpeg'],
       'image/jpg': ['.jpg'],
       'image/png': ['.png'],
+      'image/heic': ['.heic'],
     },
     multiple: false,
     maxSize: 10 * 1024 * 1024,
