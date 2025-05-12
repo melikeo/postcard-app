@@ -3,6 +3,7 @@ import { useDropzone } from 'react-dropzone';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { usePostcardStore } from '../stores/postcardStore';
 import { processImage } from '../utils/imageEdit';
+import heic2any from 'heic2any';
 
 type MyDropzoneProps = {
   onFilesDrop?: (files: File[]) => void
@@ -21,30 +22,47 @@ export default function MyDropzone({ onFilesDrop }: MyDropzoneProps) {
   }, [uploadedImage, isGrayscale]);
 
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    const file = acceptedFiles[0];
+  const onDrop = useCallback(async (acceptedFiles: File[]) => {
+    const originalFile = acceptedFiles[0];
+    if (!originalFile) return;
 
-    if (onFilesDrop) {
-      onFilesDrop(acceptedFiles)
-    }
+    try {
+      let file = originalFile;
+      if (originalFile.type === "image/heic" || originalFile.type === "image.heif") {
+        const convertedBlob = await heic2any({
+          blob: file,
+          toType: "image/jpeg",
+          quality: 0.9,
+        });
 
-    const reader = new FileReader();
+        file = new File(
+          [convertedBlob as Blob],
+          file.name.replace(/\.heic$/, ".jpg"),
+          { type: "image/jpeg", }
+        );
+      }
 
-    reader.onload = () => {
-      setImage(reader.result as string); // save image (as Base64)
-    }
+      const blobUrl = URL.createObjectURL(file);
+      setProcessedImage(blobUrl);
 
-    if (file) {
-      reader.readAsDataURL(file); // read image
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImage(reader.result as string); // save image (as Base64)
+      }
+
+      if (onFilesDrop) onFilesDrop([file]);
+    } catch (error) {
+      console.error("Converting failed: ", error);
+      alert("This image format cannot be processed.");
     }
   }, [onFilesDrop, isGrayscale]);
 
   const { getRootProps, getInputProps, isDragActive, fileRejections, open } = useDropzone({
     onDrop,
     accept: {
-      'image/jpeg': [ '.jpeg' ],      
-      'image/jpg': [ '.jpg' ],
-      'image/png': [ '.png' ],
+      'image/jpeg': ['.jpeg'],
+      'image/jpg': ['.jpg'],
+      'image/png': ['.png'],
     },
     multiple: false,
     maxSize: 10 * 1024 * 1024,
@@ -90,8 +108,8 @@ export default function MyDropzone({ onFilesDrop }: MyDropzoneProps) {
       {fileRejections.length > 0 && (
         <p className="font-playfair-display text-red-500 mt-2">
           {fileRejections.some(rej => rej.errors.some(e => e.code === "file-too-large"))
-          ? "File is too large (max. 10MB)."
-          : "Wrong file type! - only images accepted"}
+            ? "File is too large (max. 10MB)."
+            : "Wrong file type! - only images accepted"}
         </p>
       )}
 
